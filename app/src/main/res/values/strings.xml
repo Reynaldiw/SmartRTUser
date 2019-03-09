@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">SmartRT</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="nama_lengkap">Nama Lengkap</string>
+    <string name="nomor_ktp">Nomor KTP</string>
+    <string name="tanggal_lahir">Tanggal Lahir</string>
+    <string name="laki_laki">Laki-Laki</string>
+    <string name="perempuan">Perempuan</string>
+    <string name="jenis_kelamin">Jenis Kelamin</string>
+    <string name="profesi">Profesi</string>
+    <string name="no_telp">No.Telp</string>
+    <string name="email">Email</string>
+    <string name="alamat">Alamat</string>
+    <string name="keterangan">Keterangan:</string>
+    <string name="isi_keterangan">
+        Pastikan sebelum mendaftar, sudah dipastikan telah memberikan laporan kepada ketua RT, karena
+        registrasi ini membutuhkan Verifikasi dari ketua RT. Akun tak akan bisa Login sampai mendapatkan
+        verifikasi dari ketua RT. Enjoy :) ~~~
+    </string>
+    <string name="for_login">For Login</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_message">Field tidak boleh kosong</string>
+    <string name="sign_in">Already Have Account ?</string>
+    <string name="loading">Loading ...</string>
+    <string name="news">News</string>
+    <string name="titik">*</string>
+    <string name="smart_rt">Smart RT</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="selected_photo">Selected Photo</string>
+    <string name="content">Content</string>
+    <string name="keterengan_berita">Jika ingin mengupload informasi, maka dibutuhkan Konfirmasi dari Ketua RT. Ketika anda memencet Send maka request akan dikirimkan dan menunggu untuk konfirmasi... Enjoyy :)</string>
+    <string name="keterangan_agenda">Jika ingin mengupload agenda, maka dibutuhkan Konfirmasi dari Ketua RT. Ketika anda memencet Send maka request akan dikirimkan dan menunggu untuk konfirmasi... Enjoyy :)</string>
+    <string name="logout">Logout</string>
+    <string name="laporan">LAPORAN</string>
+    <string name="judul_laporan">Judul Laporan</string>
+    <string name="date">Date (yyyy-mm-dd)</string>
+    <string name="ketua_rt">Ketua RT</string>
+    <string name="wakil_ketua">Wakil Ketua</string>
+    <string name="bendahara">Bendahara</string>
+    <string name="sekretaris">Sekretaris</string>
+    <string name="pengurus">Pengurus</string>
+    <string name="judul">Judul</string>
+    <string name="status">Status</string>
+    <string name="tambah_agenda">Tambah Agenda</string>
+    <string name="nama_toko">Nama Toko</string>
+    <string name="deskripsi_toko">Deskripsi Toko</string>
+    <string name="alamat_toko">Alamat toko</string>
+    <string name="nomor_telpon">Nomor Telpon</string>
+    <string name="send">Send</string>
+</resources>

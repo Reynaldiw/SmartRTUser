@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fff">
+
+<android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="13dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/img_berita"
+            android:layout_width="match_parent"
+            android:layout_height="165dp"
+            android:background="@color/background"
+            android:scaleType="fitXY"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_judul"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/background"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#000"/>
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/background"
+            android:layout_marginLeft="16dp"
+            android:maxLines="3"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="2"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/tv_penulis"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:background="@color/background"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_titik"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tv_penulis"
+                android:text="@string/titik"
+                android:layout_marginRight="4dp"
+                android:layout_toEndOf="@id/tv_penulis"
+                android:layout_marginEnd="4dp"
+                />
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:background="@color/background"
+                android:layout_toRightOf="@+id/tv_titik"
+                android:layout_toEndOf="@+id/tv_titik" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+</LinearLayout>
