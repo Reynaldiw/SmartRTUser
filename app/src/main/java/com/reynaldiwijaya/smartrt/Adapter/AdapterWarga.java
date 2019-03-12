@@ -1,10 +1,15 @@
 package com.reynaldiwijaya.smartrt.Adapter;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,13 +46,13 @@ public class AdapterWarga extends RecyclerView.Adapter<AdapterWarga.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         final UserItem userItem = userItemList.get(i);
 
         viewHolder.tvName.setText(userItem.getNamaLengkap());
         viewHolder.tvStatus.setText(userItem.getLevel());
 
-        RequestOptions options = new RequestOptions().error(R.drawable.avatar).placeholder(R.drawable.avatar);
+        final RequestOptions options = new RequestOptions().error(R.drawable.avatar).placeholder(R.drawable.avatar);
 
         Glide.with(context)
                 .load(Constant.IMAGE_USER_URL + userItem.getFoto())
@@ -55,8 +60,12 @@ public class AdapterWarga extends RecyclerView.Adapter<AdapterWarga.ViewHolder> 
                 .into(viewHolder.imgProfile);
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
+
+                Intent intent = new Intent(context, DetailWargaActivity.class);
+
                 bundle = new Bundle();
                 final String user_id = userItem.getIdUser();
                 bundle.putString(Constant.NAMA, userItem.getNamaLengkap());
@@ -72,7 +81,14 @@ public class AdapterWarga extends RecyclerView.Adapter<AdapterWarga.ViewHolder> 
                 bundle.putString(Constant.FOTO, userItem.getFoto());
                 bundle.putString(Constant.LEVEL, userItem.getLevel());
 
-                context.startActivity(new Intent(context, DetailWargaActivity.class).putExtras(bundle));
+                Pair[] pairs = new Pair[2];
+                pairs[0] = new Pair<View, String> (viewHolder.imgProfile, "imageTransition");
+                pairs[1] = new Pair<View, String> (viewHolder.tvName, "nameTransition");
+
+                ActivityOptions activityOptions = ActivityOptions.makeSceneTransitionAnimation((Activity) context, pairs);
+
+                intent.putExtras(bundle);
+               context.startActivity(intent, activityOptions.toBundle());
             }
         });
 

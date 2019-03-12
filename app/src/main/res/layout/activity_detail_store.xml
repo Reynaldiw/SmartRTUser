@@ -61,13 +61,13 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="10dp"
             app:cardCornerRadius="16dp"
-            android:backgroundTint="#20dcfd">
+            android:backgroundTint="#fff">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:background="#20dcfd"
+                android:background="#fff"
                 android:orientation="vertical">
 
                 <TextView

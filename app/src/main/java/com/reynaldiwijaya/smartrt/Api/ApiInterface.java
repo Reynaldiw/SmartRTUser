@@ -27,24 +27,24 @@ import retrofit2.http.Part;
 
 public interface ApiInterface {
 
-//    @Multipart
-//    @POST("register.php")
-//    Call<ResponseRegister> registerUser(
-//            @Part("nama_lengkap") RequestBody nama,
-//            @Part("no_ktp") RequestBody nomor_ktp,
-//            @Part("alamat") RequestBody alamat,
-//            @Part("status") RequestBody status,
-//            @Part("tgl_lahir") RequestBody tgl_lahir,
-//            @Part("jenkel") RequestBody jenkel,
-//            @Part("profesi") RequestBody profesi,
-//            @Part("no_tlp") RequestBody no_tlp,
-//            @Part("email") RequestBody email,
-//            @Part("username") RequestBody username,
-//            @Part("password") RequestBody password,
-//            @Part MultipartBody.Part foto,
-//            @Part("konfirmasi") RequestBody konfirmasi,
-//            @Part("level") RequestBody level
-//    );
+    @Multipart
+    @POST("register.php")
+    Call<ResponseRegister> registerUser(
+            @Part("nama_lengkap") RequestBody nama,
+            @Part("no_ktp") RequestBody nomor_ktp,
+            @Part("alamat") RequestBody alamat,
+            @Part("status") RequestBody status,
+            @Part("tgl_lahir") RequestBody tgl_lahir,
+            @Part("jenkel") RequestBody jenkel,
+            @Part("profesi") RequestBody profesi,
+            @Part("no_tlp") RequestBody no_tlp,
+            @Part("email") RequestBody email,
+            @Part("username") RequestBody username,
+            @Part("password") RequestBody password,
+            @Part("konfirmasi") RequestBody konfirmasi,
+            @Part("level") RequestBody level,
+            @Part MultipartBody.Part foto
+    );
 
     @FormUrlEncoded
     @POST("login.php")
@@ -62,15 +62,15 @@ public interface ApiInterface {
             @Field("tgl_lapor") String date
     );
 
-    @FormUrlEncoded
+    @Multipart
     @POST("insertnews.php")
     Call<ResponseInformasi> informasi(
-            @Field("id_user") String idUser,
-            @Part MultipartBody.Part foto,
-            @Field("judul") String judul,
-            @Field("content") String content,
-            @Field("tgl_nulis") String date,
-            @Field("konfirmasi") String konfirmasi
+            @Part("id_user") RequestBody idUser,
+            @Part("judul") RequestBody judul,
+            @Part("content") RequestBody content,
+            @Part("tgl_nulis") RequestBody date,
+            @Part("konfirmasi") RequestBody konfirmasi,
+            @Part MultipartBody.Part foto
     );
 
     @GET("getDataWarga.php")
@@ -89,20 +89,22 @@ public interface ApiInterface {
             @Field("content") String content,
             @Field("tempat") String tempat,
             @Field("tanggal") String tanggal,
-            @Field("konfirmasi") int konfirmasi
+            @Field("konfirmasi") String konfirmasi
     );
 
     @GET("getagenda.php")
     Call<ResponseGetAgenda> getAgenda();
 
-    @FormUrlEncoded
+    @Multipart
     @POST("insertstore.php")
     Call<ResponseStore> sendDataStore(
-            @Field("id_user") String id_user,
-            @Field("nama_toko") String nama_toko,
-            @Field("deskripsi") String deskripsi,
-            @Field("alamat") String alamat,
-            @Field("no_tlp") String no_tlp
+            @Part("id_user") RequestBody id_user,
+            @Part("nama_toko") RequestBody nama_toko,
+            @Part("deskripsi") RequestBody deskripsi,
+            @Part("alamat") RequestBody alamat,
+            @Part("no_tlp") RequestBody no_tlp,
+            @Part("konfirmasi") RequestBody konfirmasi,
+            @Part MultipartBody.Part foto
     );
 
     @GET("konfirmasistore.php")

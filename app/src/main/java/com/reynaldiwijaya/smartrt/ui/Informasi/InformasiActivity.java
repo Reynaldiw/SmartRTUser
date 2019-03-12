@@ -27,15 +27,19 @@ import android.widget.Toast;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.reynaldiwijaya.smartrt.Adapter.AdapterInformasi;
+import com.reynaldiwijaya.smartrt.Api.ApiClient;
+import com.reynaldiwijaya.smartrt.Api.ApiInterface;
 import com.reynaldiwijaya.smartrt.Helper.Constant;
 import com.reynaldiwijaya.smartrt.Helper.SessionManager;
 import com.reynaldiwijaya.smartrt.R;
 import com.reynaldiwijaya.smartrt.model.Informasi.NewsItem;
+import com.reynaldiwijaya.smartrt.model.Informasi.ResponseInformasi;
 import com.reynaldiwijaya.smartrt.ui.Informasi.Presenter.InformasiContract;
 import com.reynaldiwijaya.smartrt.ui.Informasi.Presenter.InformasiPresenter;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -48,6 +52,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class InformasiActivity extends AppCompatActivity implements InformasiContract.View {
 
@@ -59,6 +69,8 @@ public class InformasiActivity extends AppCompatActivity implements InformasiCon
     FloatingActionButton fab;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout swipeRefresh;
+
+    private ProgressDialog progressDialog;
 
     private InformasiPresenter informasiPresenter = new InformasiPresenter(this);
     private Dialog dialog;
@@ -72,6 +84,7 @@ public class InformasiActivity extends AppCompatActivity implements InformasiCon
     private TextInputEditText edt_content;
     private Button btn_send;
     private Button btn_cancel;
+    private ApiInterface apiInterface;
 
 
     @Override
@@ -89,13 +102,11 @@ public class InformasiActivity extends AppCompatActivity implements InformasiCon
 
         sm = new SessionManager(this);
 
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         informasiPresenter.getInformasi();
     }
 
@@ -194,7 +205,13 @@ public class InformasiActivity extends AppCompatActivity implements InformasiCon
         judul = edt_judul.getText().toString();
         content = edt_content.getText().toString();
         date = getCurentDate();
-        konfirmasi = "0";
+
+        if (sm.getKonfirmasi().equals("2")) {
+            konfirmasi = "1";
+        } else {
+            konfirmasi = "0";
+        }
+
         id_user = sm.getIdUser();
         Log.i("judul", judul);
         Log.i("content", content);
@@ -225,10 +242,8 @@ public class InformasiActivity extends AppCompatActivity implements InformasiCon
         }
 
         if(isValid) {
-            showProgress();
             sendData();
             clearData();
-            dialog.dismiss();
         }
     }
 
@@ -239,34 +254,47 @@ public class InformasiActivity extends AppCompatActivity implements InformasiCon
     }
 
     private void sendData() {
-        try {
-            path = getPath(filepath);
-            Toasty.success(this, "Succes to Send", Toasty.LENGTH_SHORT).show();
-            hideProgress();
-        } catch (Exception e) {
-            Log.d("FoodUtama", "Msg; " + e.getMessage());
-            hideProgress();
-            Toasty.error(this, "Images Terlalu Besar, Silahkan pilih images yang lebih kecil", Toasty.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
-        try {
-            new MultipartUploadRequest(this, Constant.UPLOAD_URL)
-                    .addFileToUpload(path, "foto")
-                    .addParameter("id_user", id_user)
-                    .addParameter("judul", judul)
-                    .addParameter("content", content)
-                    .addParameter("tgl_nulis", date)
-                    .addParameter("konfirmasi", konfirmasi)
-                    .setMaxRetries(2)
-                    .startUpload();
+        path = getPath(filepath);
+        File imageFile = new File(path);
 
+        RequestBody image = RequestBody.create(MediaType.parse("multipart/form-data"), imageFile);
+        MultipartBody.Part partImage = MultipartBody.Part.createFormData("foto", imageFile.getName(), image);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        RequestBody id = RequestBody.create(MediaType.parse("multipart/form-data"), id_user);
+        RequestBody judulinformasi = RequestBody.create(MediaType.parse("multipart/form-data"), judul);
+        RequestBody contentInformasi = RequestBody.create(MediaType.parse("multipart/form-data"), content);
+        RequestBody tanggal = RequestBody.create(MediaType.parse("multipart/form-data"), date);
+        RequestBody konfirmasiInformasi = RequestBody.create(MediaType.parse("multipart/form-data"), konfirmasi);
+
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseInformasi> call = apiInterface.informasi(id, judulinformasi, contentInformasi, tanggal, konfirmasiInformasi, partImage);
+        call.enqueue(new Callback<ResponseInformasi>() {
+            @Override
+            public void onResponse(Call<ResponseInformasi> call, Response<ResponseInformasi> response) {
+                progressDialog.dismiss();
+
+                ResponseInformasi responseInformasi = response.body();
+
+                if (responseInformasi.getResult().equals("1")) {
+                    Toasty.success(InformasiActivity.this, responseInformasi.getMsg(), Toasty.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                } else {
+                    Toasty.error(InformasiActivity.this, responseInformasi.getMsg(), Toasty.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseInformasi> call, Throwable t) {
+                progressDialog.dismiss();
+                Toasty.error(InformasiActivity.this, t.getMessage(), Toasty.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @Override

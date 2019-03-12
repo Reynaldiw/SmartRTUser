@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginBottom="8dp"
-                android:background="@android:color/holo_blue_light"
+                android:background="@color/colorPrimary"
                 >
 
             <TextView

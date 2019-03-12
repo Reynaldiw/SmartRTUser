@@ -20,7 +20,7 @@ public class AgendaPresenter implements AgendaContract.Presenter {
 
 
     @Override
-    public void postAgenda(String judul, String content, String tempat, String tanggal, int konfirmasi) {
+    public void postAgenda(String judul, String content, String tempat, String tanggal, String konfirmasi) {
         if (judul == null || judul.isEmpty()) {
             view.showFailureMessage("Judul Kosong");
             return;
@@ -45,12 +45,12 @@ public class AgendaPresenter implements AgendaContract.Presenter {
             @Override
             public void onResponse(Call<ResponseAgenda> call, Response<ResponseAgenda> response) {
                 view.hideProgress();
+
                 if (response.body() != null) {
                     ResponseAgenda responseAgenda = response.body();
 
                     if (responseAgenda.getPesan() != null) {
                         view.showSuccesMessage(responseAgenda.getPesan());
-                        view.clearData();
                     }
 
                 }

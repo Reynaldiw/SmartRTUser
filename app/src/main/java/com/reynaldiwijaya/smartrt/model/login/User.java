@@ -46,6 +46,17 @@ public class User{
 	@SerializedName("username")
 	private String username;
 
+	@SerializedName("level")
+	private String level;
+
+	public String getLevel() {
+		return level;
+	}
+
+	public void setLevel(String level) {
+		this.level = level;
+	}
+
 	public void setNoTlp(String noTlp){
 		this.noTlp = noTlp;
 	}

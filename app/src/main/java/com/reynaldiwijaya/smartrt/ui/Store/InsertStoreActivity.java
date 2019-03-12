@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,12 +25,16 @@ import com.reynaldiwijaya.smartrt.R;
 import com.reynaldiwijaya.smartrt.ui.Store.Presenter.InsertStoreContract;
 import com.reynaldiwijaya.smartrt.ui.Store.Presenter.InsertStorePresenter;
 
+import java.io.File;
 import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class InsertStoreActivity extends AppCompatActivity implements InsertStoreContract.View {
 
@@ -55,7 +60,8 @@ public class InsertStoreActivity extends AppCompatActivity implements InsertStor
     private InsertStorePresenter insertStorePresenter = new InsertStorePresenter(this, this);
     private SessionManager sm;
     private Uri filepath;
-    private String path;
+    private String mediapath;
+    private String id_user, nama_toko, alamat, deskripsi, no_tlp, konfirmasi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +81,9 @@ public class InsertStoreActivity extends AppCompatActivity implements InsertStor
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                insertStorePresenter.getDataStore(sm.getIdUser(),
-                        edtNamaToko.getText().toString(),
-                        edtAlamat.getText().toString(),
-                        edtDeskripsi.getText().toString(),
-                        edtNoTlp.getText().toString(),
-                        path = getPath(filepath));
-                Log.i("id", sm.getIdUser());
+
+                getData();
+                checkData();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -92,6 +94,67 @@ public class InsertStoreActivity extends AppCompatActivity implements InsertStor
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    private void checkData() {
+
+        boolean isValid = true;
+
+        if (TextUtils.isEmpty(id_user)) {
+            Toasty.error(this, "Id User null", Toasty.LENGTH_SHORT).show();
+            isValid = false;
+        }
+        if (TextUtils.isEmpty(nama_toko)) {
+            edtNamaToko.setError(getString(R.string.error_message));
+            edtNamaToko.requestFocus();
+            isValid = false;
+        }
+        if (TextUtils.isEmpty(deskripsi)) {
+            edtDeskripsi.setError(getString(R.string.error_message));
+            edtDeskripsi.requestFocus();
+            isValid = false;
+        }
+        if (TextUtils.isEmpty(alamat)) {
+            edtAlamat.setError(getString(R.string.error_message));
+            edtAlamat.requestFocus();
+            isValid = false;
+        }
+        if (TextUtils.isEmpty(no_tlp)) {
+            edtNoTlp.setError(getString(R.string.error_message));
+            edtNoTlp.requestFocus();
+            isValid = false;
+        }
+        if (isValid) {
+
+            mediapath = getPath(filepath);
+            File imageFile = new File(mediapath);
+
+            RequestBody image = RequestBody.create(MediaType.parse("multipart/form-data"), imageFile);
+            MultipartBody.Part partImage = MultipartBody.Part.createFormData("foto", imageFile.getName(), image);
+
+            RequestBody id = RequestBody.create(MediaType.parse("multipart/form-data"), id_user);
+            RequestBody toko = RequestBody.create(MediaType.parse("multipart/form-data"), nama_toko);
+            RequestBody alamatToko = RequestBody.create(MediaType.parse("multipart/form-data"), alamat);
+            RequestBody desc = RequestBody.create(MediaType.parse("multipart/form-data"), deskripsi);
+            RequestBody tlp = RequestBody.create(MediaType.parse("multipart/form-data"), no_tlp);
+            RequestBody konfirmasiToko = RequestBody.create(MediaType.parse("multipart/form-data"), konfirmasi);
+
+            insertStorePresenter.getDataStore(id, toko, alamatToko, desc, tlp, partImage, konfirmasiToko);
+        }
+    }
+
+    private void getData() {
+        id_user = sm.getIdUser();
+        nama_toko = edtNamaToko.getText().toString();
+        deskripsi = edtDeskripsi.getText().toString();
+        alamat = edtAlamat.getText().toString();
+        no_tlp = edtNoTlp.getText().toString();
+
+        if (sm.getKonfirmasi().equals("2")) {
+            konfirmasi = "1";
+        } else {
+            konfirmasi = "0";
+        }
     }
 
     @Override
@@ -166,7 +229,7 @@ public class InsertStoreActivity extends AppCompatActivity implements InsertStor
                         .Media._ID + " = ? ", new String[]{document_id}, null);
 
 
-            cursor.moveToFirst();
+        cursor.moveToFirst();
         String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
         cursor.close();
 

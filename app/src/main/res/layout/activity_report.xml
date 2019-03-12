@@ -5,15 +5,19 @@
     android:layout_height="match_parent"
     android:id="@+id/swipeRefresh">
 
-<LinearLayout
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:src="@drawable/rsz_laporan"/>
+        android:layout_width="122dp"
+        android:layout_height="121dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="13dp"
+        android:src="@drawable/laporan" />
 
     <TextView
         android:id="@+id/tv_pesan"
@@ -28,12 +32,17 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_report"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="432dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="135dp">
 
     </android.support.v7.widget.RecyclerView>
 
 
-</LinearLayout>
+
+
+</RelativeLayout>
 
 </android.support.v4.widget.SwipeRefreshLayout>
 

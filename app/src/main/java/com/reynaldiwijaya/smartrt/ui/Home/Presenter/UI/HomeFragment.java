@@ -1,22 +1,18 @@
 package com.reynaldiwijaya.smartrt.ui.Home.Presenter.UI;
 
-import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.card.MaterialCardView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -74,6 +70,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     private HomePresenter homePresenter = new HomePresenter(this);
     private SessionManager sm;
+    private ProgressDialog progressDialog;
 
     public HomeFragment() {
 
@@ -90,6 +87,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
         sm = new SessionManager(getActivity());
 
+
         RequestOptions requestOptions = new RequestOptions().error(R.drawable.avatar);
         Glide.with(getActivity())
                 .load(Constant.IMAGE_USER_URL + sm.getImageUser())
@@ -98,15 +96,9 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
         tvNama.setText(sm.getNameUser());
 
+        homePresenter.getData();
 
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        homePresenter.getData();
     }
 
     @Override
@@ -140,8 +132,21 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     }
 
     @Override
+    public void showProgress() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideProgress() {
+        progressDialog.dismiss();
+    }
+
+    @Override
     public void showFailureMsg(String msg) {
-        Toasty.error(getContext(), msg, Toasty.LENGTH_SHORT).show();
+        Toasty.error(getActivity(), msg, Toasty.LENGTH_SHORT).show();
     }
 
     @Override
@@ -149,6 +154,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         rvNews.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rvNews.setAdapter(new AdapterInformasi(getActivity(), newsItemList));
         rvNews.setHasFixedSize(true);
-        }
+    }
 
 }

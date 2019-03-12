@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface HomeContract {
     interface View {
+        void showProgress();
+        void hideProgress();
         void showFailureMsg(String msg);
         void showData(List<NewsItem> newsItemList);
     }

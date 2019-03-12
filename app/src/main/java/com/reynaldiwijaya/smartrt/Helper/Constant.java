@@ -3,9 +3,9 @@ package com.reynaldiwijaya.smartrt.Helper;
 public class Constant {
     public static final String BASE_URL = "https://lombadinacom.000webhostapp.com/Dinacom/";
     public static final String IMAGE_INFORMASI_URL = "https://lombadinacom.000webhostapp.com/Dinacom/upload_informasi/";
-    public static final String UPLOAD_URL = "https://lombadinacom.000webhostapp.com/Dinacom/insertnews.php";
+    public static final String UPLOAD_URL = "https://lombadinacom.000webhostapp.com//Dinacom/insertnews.php";
     public static final String UPLOAD_URL_STORE = "https://lombadinacom.000webhostapp.com/Dinacom/insertstore.php";
-    public static final String UPLOAD_REGISTER_URL = "https://lombadinacom.000webhostapp.com/Dinacom/register.php";
+//    public static final String UPLOAD_REGISTER_URL = "https://lombadinacom.000webhostapp.com/Dinacom/register.php";
     public static final String IMAGE_USER_URL = "https://lombadinacom.000webhostapp.com/Dinacom/upload/";
     public static final String IMAGE_STORE_URL = "https://lombadinacom.000webhostapp.com/Dinacom/storeupload/";
     public static final String INDONESIA_NEWS = "https://newsapi.org/";
@@ -37,4 +37,5 @@ public class Constant {
     public static final String FOTO_STORE = "foto_toko";
     public static final String REPLY = "reply";
     public static final String OBJ = "obj";
+    public static final String KEY_INTRO = "isIntroOpened";
 }

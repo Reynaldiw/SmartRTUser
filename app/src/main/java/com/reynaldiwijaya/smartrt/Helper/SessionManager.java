@@ -3,6 +3,7 @@ package com.reynaldiwijaya.smartrt.Helper;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.reynaldiwijaya.smartrt.MainActivity;
 import com.reynaldiwijaya.smartrt.ui.Intro.IntroActivity;
@@ -62,24 +63,99 @@ public class SessionManager extends MyFunction {
         return sp.getString("idUser", "");
     }
 
-    public void storeIntro() {
-        editor.putBoolean("isIntroOpened", true);
+
+    public void setNoKtp(String noKtp) {
+        editor.putString("noKtp", noKtp);
         editor.commit();
     }
 
-    public boolean intro() {
-        return sp.getBoolean("isIntroOpened", false);
+    public String getNoKtp() {
+        return sp.getString("noKtp", "");
+    }
+
+    public void setAlamat(String alamat) {
+        editor.putString("alamat", alamat);
+        editor.commit();
+    }
+
+    public String getAlamat() {
+        return sp.getString("alamat", "");
+    }
+
+    public void setStatus(String status) {
+        editor.putString("status", status);
+        editor.commit();
+    }
+
+    public String getStatus() {
+        return sp.getString("status", "");
+    }
+
+    public void setTglLahir(String tglLahir) {
+        editor.putString("tglLahir", tglLahir);
+        editor.commit();
+    }
+
+    public String getTglLahir() {
+        return sp.getString("tglLahir", "");
+    }
+
+    public void setJenkel(String jenkel) {
+        editor.putString("jenkel", jenkel);
+        editor.commit();
+    }
+
+    public String getJenkel() {
+        return sp.getString("jenkel", "");
+    }
+
+    public void setProfesi(String profesi) {
+        editor.putString("profesi", profesi);
+        editor.commit();
+    }
+
+    public String getProfesi() {
+        return sp.getString("profesi", "");
+    }
+
+    public void setNoTlp(String noTlp) {
+        editor.putString("noTlp", noTlp);
+        editor.commit();
+    }
+
+    public String getNoTlp() {
+        return sp.getString("noTlp", "");
+    }
+
+    public void setEmail(String email) {
+        editor.putString("email", email);
+        editor.commit();
+    }
+
+    public String getEmail() {
+        return sp.getString("email", "");
+    }
+
+    public void setLevel(String level) {
+        editor.putString("level", level);
+        editor.commit();
+    }
+
+    public String getLevel() {
+        return sp.getString("level", "");
+    }
+
+    public void setKonfirmasi(String konfirmasi) {
+        editor.putString("konfirmasi", konfirmasi);
+        editor.commit();
+    }
+
+    public String getKonfirmasi() {
+        return sp.getString("konfirmasi", "");
     }
 
 
     public void checkLogin() {
-        if (!this.intro()){
-            Intent intent = new Intent(_context, IntroActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            _context.startActivity(intent);
-        } else {
-
             if (!this.Login()) {
                 Intent intent = new Intent(_context, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -91,8 +167,6 @@ public class SessionManager extends MyFunction {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 _context.startActivity(intent);
             }
-        }
-
     }
 
     public Boolean Login() {

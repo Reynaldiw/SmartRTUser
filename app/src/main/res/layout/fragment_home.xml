@@ -19,9 +19,9 @@
                 android:background="@color/colorPrimary" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                />
+                android:layout_width="match_parent"
+                android:layout_height="95dp"
+                android:src="@drawable/smart" />
 
             <android.support.design.card.MaterialCardView
                 android:id="@+id/cv_home"
@@ -62,12 +62,14 @@
                             android:id="@+id/tv_nama"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
                             android:layout_marginLeft="20dp"
                             android:textSize="22sp"
                             android:textStyle="bold"
-                            android:fontFamily="cursive"
-                            android:text="Nama" />
+                            android:text="Nama"
+                            android:padding="8dp"
+                            android:paddingRight="8dp"
+                            android:textColor="#000"
+                            android:fontFamily="cursive"/>
 
                     </LinearLayout>
 
@@ -85,9 +87,9 @@
                         android:weightSum="3">
 
                         <LinearLayout
-                            android:layout_width="70dp"
+                            android:layout_width="75dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="12dp"
+                            android:layout_margin="10dp"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:orientation="vertical">
@@ -96,13 +98,13 @@
                                 android:id="@+id/cv_news"
                                 android:layout_width="70dp"
                                 android:layout_height="70dp"
-                                app:cardCornerRadius="30dp">
+                                app:cardCornerRadius="35dp">
 
                                 <ImageView
                                     android:layout_width="70dp"
-                                    android:layout_height="70dp"
+                                    android:layout_height="72dp"
                                     android:layout_gravity="center"
-                                    android:src="@drawable/rsz_berita" />
+                                    android:src="@drawable/berita" />
 
                             </android.support.design.card.MaterialCardView>
 
@@ -111,6 +113,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:text="Informasi RT"
+                                android:textAlignment="center"
                                 android:textColor="#1067f2" />
 
                         </LinearLayout>
@@ -118,10 +121,11 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="12dp"
+                            android:layout_margin="9dp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:padding="5dp">
 
                             <android.support.design.card.MaterialCardView
                                 android:id="@+id/cv_news_indonesia"
@@ -131,9 +135,9 @@
 
                                 <ImageView
                                     android:layout_width="100dp"
-                                    android:layout_height="70dp"
+                                    android:layout_height="65dp"
                                     android:layout_gravity="center"
-                                    android:src="@drawable/rsz_kado" />
+                                    android:src="@drawable/kado"/>
 
                             </android.support.design.card.MaterialCardView>
 
@@ -149,9 +153,9 @@
 
 
                         <LinearLayout
-                            android:layout_width="70dp"
+                            android:layout_width="75dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="12dp"
+                            android:layout_margin="10dp"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:orientation="vertical">
@@ -160,13 +164,13 @@
                                 android:id="@+id/cv_store"
                                 android:layout_width="70dp"
                                 android:layout_height="70dp"
-                                app:cardCornerRadius="30dp">
+                                app:cardCornerRadius="35dp">
 
                                 <ImageView
-                                    android:layout_width="70dp"
+                                    android:layout_width="85dp"
                                     android:layout_height="70dp"
                                     android:layout_gravity="center"
-                                    android:src="@drawable/rsz_toko" />
+                                    android:src="@drawable/toko" />
 
                             </android.support.design.card.MaterialCardView>
 
@@ -199,13 +203,13 @@
                                 android:id="@+id/cv_agenda"
                                 android:layout_width="70dp"
                                 android:layout_height="70dp"
-                                app:cardCornerRadius="30dp">
+                                app:cardCornerRadius="35dp">
 
                                 <ImageView
                                     android:layout_width="70dp"
                                     android:layout_height="70dp"
                                     android:layout_gravity="center"
-                                    android:src="@drawable/rsz_2agenda" />
+                                    android:src="@drawable/agenda"/>
 
                             </android.support.design.card.MaterialCardView>
 
@@ -230,13 +234,13 @@
                                 android:id="@+id/cv_citizen"
                                 android:layout_width="70dp"
                                 android:layout_height="70dp"
-                                app:cardCornerRadius="30dp">
+                                app:cardCornerRadius="35dp">
 
                                 <ImageView
                                     android:layout_width="70dp"
                                     android:layout_height="70dp"
                                     android:layout_gravity="center"
-                                    android:src="@drawable/rsz_warga" />
+                                    android:src="@drawable/warga"/>
 
                             </android.support.design.card.MaterialCardView>
 
@@ -245,7 +249,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:text="Warga"
-                                android:textColor="#2e870f" />
+                                android:textColor="#2e870f"/>
 
                         </LinearLayout>
 
@@ -262,13 +266,13 @@
                                 android:id="@+id/cv_laporan"
                                 android:layout_width="70dp"
                                 android:layout_height="70dp"
-                                app:cardCornerRadius="30dp">
+                                app:cardCornerRadius="35dp">
 
                                 <ImageView
-                                    android:layout_width="70dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="70dp"
                                     android:layout_gravity="center"
-                                    android:src="@drawable/rsz_laporan" />
+                                    android:src="@drawable/laporan" />
 
                             </android.support.design.card.MaterialCardView>
 

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
-    android:backgroundTint="#ff6e2a">
+    android:backgroundTint="@color/colorPrimary">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:src="@drawable/rsz_2agenda"/>
+            android:src="@drawable/agenda"/>
 
         <TextView
             android:id="@+id/tv_judul"

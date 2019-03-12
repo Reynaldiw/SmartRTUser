@@ -44,10 +44,6 @@ public class AdapterReport extends RecyclerView.Adapter<AdapterReport.ViewHolder
         viewHolder.tvContent.setText(laporanItemList.get(i).getLaporan());
         viewHolder.tvDate.setText(laporanItemList.get(i).getTglLapor());
 
-        ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
-        int color = colorGenerator.getRandomColor();
-        viewHolder.cvReport.setCardBackgroundColor(color);
-
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

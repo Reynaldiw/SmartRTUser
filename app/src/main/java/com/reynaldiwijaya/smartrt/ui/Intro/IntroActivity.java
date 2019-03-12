@@ -6,13 +6,17 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.reynaldiwijaya.smartrt.Helper.Constant;
+import com.reynaldiwijaya.smartrt.Helper.SessionIntro;
 import com.reynaldiwijaya.smartrt.Helper.SessionManager;
 import com.reynaldiwijaya.smartrt.MainActivity;
 import com.reynaldiwijaya.smartrt.R;
@@ -30,8 +34,8 @@ public class IntroActivity extends AppCompatActivity {
     private Button btnNext, btnGetStarted;
     private  int position = 0;
     private Animation btnAnim;
-    private SessionManager sm;
-
+    private SessionIntro si;
+    private TextView tvSkip;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,11 +47,10 @@ public class IntroActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_intro);
 
-
-        // hide the action bar
-        sm = new SessionManager(this);
+        si = new SessionIntro(this);
 
         // ini views
+        tvSkip = findViewById(R.id.tv_skip);
         btnNext = findViewById(R.id.btn_next);
         btnGetStarted = findViewById(R.id.btn_get_started);
         tabIndicator = findViewById(R.id.tab_indicator);
@@ -55,9 +58,13 @@ public class IntroActivity extends AppCompatActivity {
 
         // fill list screen
         final List<ScreenItem> mList = new ArrayList<>();
-        mList.add(new ScreenItem("Know Your Neighbourhood Condition","get the latest news in your neighborhood",R.drawable.rsz_berita));
-        mList.add(new ScreenItem("Fast Delivery","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, consectetur  consectetur adipiscing elit",R.drawable.citizen));
-        mList.add(new ScreenItem("Easy Payment","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, consectetur  consectetur adipiscing elit",R.drawable.avatar));
+        mList.add(new ScreenItem("Information","Ingin Tau kabar Terhangat Di daerahmu?",R.drawable.berita));
+        mList.add(new ScreenItem("KADO","Kabar Indonesia, Informasi Terbaru Di Indonesia",R.drawable.kado));
+        mList.add(new ScreenItem("Agenda","Sudah Tau Acara - Acara Di Daerahmu?",R.drawable.agenda));
+        mList.add(new ScreenItem("Repost","Ada Masalah Yang Berhubungan Dengan Lingkunganmu?",R.drawable.laporan));
+        mList.add(new ScreenItem("Your Neighbour","Tau Siapa Saja Tetanggamu?",R.drawable.warga));
+        mList.add(new ScreenItem("Store","Ingin Belanja Tapi Tidak Mau Jauh - Jauh",R.drawable.toko));
+        mList.add(new ScreenItem("Hello !","Kami Akan Membantumu Mendapatkannya",R.drawable.smarticon));
 
         // setup viewpager
         screenPager =findViewById(R.id.screen_viewpager);
@@ -114,12 +121,22 @@ public class IntroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // Move to the next Activity
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 // also we need to save a boolean value to storage so next time when the user run the app
                 // we could know that he is already checked the intro screen activity
                 // i'm going to use shared preferences to that process
                 savePrefsData();
+                // Move to the next Activity
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
+            }
+        });
+
+        tvSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                savePrefsData();
+                // Move to the next Activity
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 finish();
             }
         });
@@ -127,8 +144,8 @@ public class IntroActivity extends AppCompatActivity {
 
     }
 
-    private void savePrefsData() {
-       sm.storeIntro();
+    public void savePrefsData() {
+        si.storeIntro();
     }
 
     // Show the get Started Button and hide the indicator and the Next Button
@@ -137,6 +154,7 @@ public class IntroActivity extends AppCompatActivity {
         btnNext.setVisibility(View.INVISIBLE);
         btnGetStarted.setVisibility(View.VISIBLE);
         tabIndicator.setVisibility(View.INVISIBLE);
+        tvSkip.setVisibility(View.INVISIBLE);
         //TODO Add an animation the getStarted Button
         // Setup Animation
         btnGetStarted.setAnimation(btnAnim);

@@ -45,10 +45,6 @@ public class AdapterAgenda extends RecyclerView.Adapter<AdapterAgenda.ViewHolder
         viewHolder.tvContent.setText(agendaItem.getContent());
         viewHolder.tvTanggal.setText(agendaItem.getTanggal());
 
-        ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
-        int color = colorGenerator.getRandomColor();
-        viewHolder.cvAgenda.setCardBackgroundColor(color);
-
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

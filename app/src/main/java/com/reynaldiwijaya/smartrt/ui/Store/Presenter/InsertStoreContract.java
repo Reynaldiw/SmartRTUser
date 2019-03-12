@@ -1,6 +1,9 @@
 package com.reynaldiwijaya.smartrt.ui.Store.Presenter;
 
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+
 public interface InsertStoreContract {
     interface View {
         void showProgress();
@@ -10,6 +13,6 @@ public interface InsertStoreContract {
     }
 
     interface Presenter {
-        void getDataStore(String id_user, String nama_toko, String alamat, String deskripsi, String no_tlp, String path);
+        void getDataStore(RequestBody id_user, RequestBody nama_toko, RequestBody alamat, RequestBody deskripsi, RequestBody no_tlp, MultipartBody.Part path, RequestBody konfirmasi);
     }
 }

@@ -1,11 +1,16 @@
 package com.reynaldiwijaya.smartrt.Adapter;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +46,7 @@ public class AdapterInformasi extends RecyclerView.Adapter<AdapterInformasi.View
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         final NewsItem newsItem = newsItemList.get(i);
 
         viewHolder.tvJudul.setText(newsItem.getJudul());
@@ -56,8 +61,12 @@ public class AdapterInformasi extends RecyclerView.Adapter<AdapterInformasi.View
         Log.d("FOTO_URL", newsItem.getFotoInformasi());
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
+
+                Intent intent = new Intent(context, InformasiDetailActivity.class);
+
                 final Bundle bundle = new Bundle();
                 bundle.putString(Constant.JUDUL, newsItem.getJudul());
                 bundle.putString(Constant.FOTO, newsItem.getFoto());
@@ -67,7 +76,18 @@ public class AdapterInformasi extends RecyclerView.Adapter<AdapterInformasi.View
                 bundle.putString(Constant.DATE, newsItem.getTglNulis());
                 bundle.putString(Constant.NAMA, newsItem.getNamaLengkap());
 
-                context.startActivity(new Intent(context, InformasiDetailActivity.class).putExtras(bundle));
+                Pair[] pairs = new Pair[4];
+                pairs[0] = new Pair<View, String> (viewHolder.imgBerita, "imageTransition");
+                pairs[1] = new Pair<View, String> (viewHolder.tvJudul, "nameTransition");
+                pairs[2] = new Pair<View, String> (viewHolder.tvSubSubtitle, "descTransition");
+                pairs[3] = new Pair<View, String> (viewHolder.tvPenulis, "penulisTransition");
+
+
+                ActivityOptions activityOptions = ActivityOptions.makeSceneTransitionAnimation((Activity) context, pairs);
+
+                intent.putExtras(bundle);
+
+                context.startActivity(intent, activityOptions.toBundle());
             }
         });
     }

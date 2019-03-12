@@ -12,7 +12,7 @@
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/rsz_2agenda"
+        android:src="@drawable/agenda"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"/>
 
@@ -78,8 +78,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:backgroundTint="#ff7e45"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        android:backgroundTint="@color/colorPrimary"
+        android:src="@drawable/ic_add"
+        app:maxImageSize="15dp"/>
 
 </FrameLayout>
 

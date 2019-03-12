@@ -44,6 +44,8 @@ public class InformasiDetailActivity extends AppCompatActivity {
     TextView tvNoTlp;
     @BindView(R.id.img_call)
     ImageButton imgCall;
+    @BindView(R.id.tv_judul)
+    TextView tvJudul;
 
     private Bundle bundle;
 
@@ -73,6 +75,7 @@ public class InformasiDetailActivity extends AppCompatActivity {
                 .apply(requestOptions)
                 .into(imgProfile);
 
+        tvJudul.setText(bundle.getString(Constant.JUDUL));
         tvContent.setText(bundle.getString(Constant.CONTENT));
         tvDate.setText(bundle.getString(Constant.DATE));
         tvNama.setText(bundle.getString(Constant.NAMA));

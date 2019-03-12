@@ -11,11 +11,9 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.reynaldiwijaya.smartrt.Helper.SessionManager;
 import com.reynaldiwijaya.smartrt.R;
 import com.reynaldiwijaya.smartrt.ui.Agenda.Presenter.AgendaContract;
 import com.reynaldiwijaya.smartrt.ui.Agenda.Presenter.AgendaPresenter;
@@ -35,18 +33,17 @@ public class TambahAgendaActivity extends AppCompatActivity implements AgendaCon
     TextInputEditText edtContent;
     @BindView(R.id.edt_tempat)
     TextInputEditText edtTempat;
-    @BindView(R.id.ib_date)
-    ImageButton ibDate;
-    @BindView(R.id.tv_date)
-    TextView tvDate;
     @BindView(R.id.btn_send)
     Button btnSend;
     @BindView(R.id.btn_cancel)
     Button btnCancel;
+    @BindView(R.id.edt_date)
+    TextInputEditText edtDate;
 
     private ProgressDialog progressDialog;
     private final AgendaPresenter agendaPresenter = new AgendaPresenter(this);
-    private DatePickerDialog.OnDateSetListener mDateSetListener;
+    private String judul, content, tempat, date, konfirmasi;
+    private SessionManager sm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,33 +51,10 @@ public class TambahAgendaActivity extends AppCompatActivity implements AgendaCon
         setContentView(R.layout.activity_tambah_agenda);
         ButterKnife.bind(this);
 
-        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month + 1;
-                String date = year + "-" + month + "-" + dayOfMonth;
-                tvDate.setText(date);
-            }
-        };
-
+        sm = new SessionManager(this);
 
     }
 
-    private void getDate() {
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog dialog = new DatePickerDialog(
-                this,
-                android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                mDateSetListener,
-                year, month, day);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
-
-    }
 
     @Override
     public void showProgress() {
@@ -92,7 +66,9 @@ public class TambahAgendaActivity extends AppCompatActivity implements AgendaCon
 
     @Override
     public void hideProgress() {
-        progressDialog.dismiss();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 
     @Override
@@ -107,15 +83,7 @@ public class TambahAgendaActivity extends AppCompatActivity implements AgendaCon
 
     }
 
-    @Override
-    public void clearData() {
-        edtJudul.setText("");
-        edtTempat.setText("");
-        edtContent.setText("");
-        tvDate.setText("");
-    }
-
-    @OnClick({R.id.btn_send, R.id.btn_cancel, R.id.ib_date})
+    @OnClick({R.id.btn_send, R.id.btn_cancel})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_send:
@@ -124,11 +92,8 @@ public class TambahAgendaActivity extends AppCompatActivity implements AgendaCon
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        agendaPresenter.postAgenda(edtJudul.getText().toString(),
-                                edtContent.getText().toString(),
-                                edtTempat.getText().toString(),
-                                tvDate.getText().toString(), 0);
-                        finish();
+                        getData();
+                        agendaPresenter.postAgenda(judul, content, tempat, date, konfirmasi);
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -144,9 +109,19 @@ public class TambahAgendaActivity extends AppCompatActivity implements AgendaCon
             case R.id.btn_cancel:
                 finish();
                 break;
-            case R.id.ib_date:
-                getDate();
-                break;
+        }
+    }
+
+    private void getData() {
+        judul = edtJudul.getText().toString();
+        content = edtContent.getText().toString();
+        tempat = edtTempat.getText().toString();
+        date = edtDate.getText().toString();
+
+        if (sm.getKonfirmasi().equals("2")) {
+            konfirmasi = "1";
+        } else {
+            konfirmasi = "0";
         }
     }
 }

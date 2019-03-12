@@ -14,6 +14,8 @@ import net.gotev.uploadservice.MultipartUploadRequest;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,6 +24,8 @@ public class InsertStorePresenter implements InsertStoreContract.Presenter {
     private InsertStoreContract.View view;
     private Context context;
 
+    private ApiInterface apiInterface;
+
     public InsertStorePresenter(InsertStoreContract.View view, Context context) {
         this.view = view;
         this.context = context;
@@ -29,28 +33,30 @@ public class InsertStorePresenter implements InsertStoreContract.Presenter {
 
 
     @Override
-    public void getDataStore(String id_user, String nama_toko, String alamat, String deskripsi, String no_tlp, String path) {
+    public void getDataStore(RequestBody id_user, RequestBody nama_toko, RequestBody alamat, RequestBody deskripsi, RequestBody no_tlp, MultipartBody.Part path, RequestBody konfirmasi) {
         view.showProgress();
 
-        try {
-            new MultipartUploadRequest(context, Constant.UPLOAD_URL_STORE)
-                    .addFileToUpload(path, "foto")
-                    .addParameter("id_user", id_user)
-                    .addParameter("nama_toko", nama_toko)
-                    .addParameter("deskripsi", deskripsi)
-                    .addParameter("alamat", alamat)
-                    .addParameter("no_tlp", no_tlp)
-                    .setMaxRetries(2)
-                    .startUpload();
-            view.hideProgress();
-            view.showSuccesMessage("Succes to Send");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            view.hideProgress();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            view.hideProgress();
-        }
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseStore> call = apiInterface.sendDataStore(id_user, nama_toko, deskripsi, alamat, no_tlp,konfirmasi, path);
+        call.enqueue(new Callback<ResponseStore>() {
+            @Override
+            public void onResponse(Call<ResponseStore> call, Response<ResponseStore> response) {
+                view.hideProgress();
 
+                ResponseStore responseStore = response.body();
+
+                if (responseStore.getResult().equals("1")) {
+                    view.showSuccesMessage(responseStore.getMsg());
+                }else {
+                    view.showFailureMessage(responseStore.getMsg());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseStore> call, Throwable t) {
+                view.hideProgress();
+                view.showFailureMessage(t.getMessage());
+            }
+        });
     }
 }

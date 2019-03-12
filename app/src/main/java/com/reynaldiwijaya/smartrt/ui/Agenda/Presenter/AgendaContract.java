@@ -6,9 +6,8 @@ public interface AgendaContract {
         void hideProgress();
         void showFailureMessage(String msg);
         void showSuccesMessage(String msg);
-        void clearData();
     }
     interface Presenter {
-        void postAgenda(String judul, String content, String tempat, String tanggal, int konfirmasi);
+        void postAgenda(String judul, String content, String tempat, String tanggal, String konfirmasi);
     }
 }

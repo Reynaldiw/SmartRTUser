@@ -21,21 +21,28 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.reynaldiwijaya.smartrt.Api.ApiClient;
+import com.reynaldiwijaya.smartrt.Api.ApiInterface;
 import com.reynaldiwijaya.smartrt.Helper.Constant;
 import com.reynaldiwijaya.smartrt.R;
+import com.reynaldiwijaya.smartrt.model.register.ResponseRegister;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -46,6 +53,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -87,6 +100,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     TextView tvDate;
     @BindView(R.id.scrollView)
     ScrollView scrollView;
+    @BindView(R.id.img_login)
+    ImageView imgLogin;
 
     private Uri filepath;
     private String mediaPath;
@@ -96,6 +111,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private Bitmap mPhoto;
     private ProgressDialog progressDialog;
     private DatePickerDialog.OnDateSetListener mDateSetDialog;
+    private Animation animation;
+    private ApiInterface apiInterface;
 
     private String blockCharacterSet = "~#^|$%&*! ";
     private InputFilter filter = new InputFilter() {
@@ -117,6 +134,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+
+        animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.button_animation);
+        imgLogin.setAnimation(animation);
 
         edtEmail.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
@@ -207,10 +227,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         no_ktp = noKTP.getText().toString();
         konfirmasi = "0";
 
-        if (edtUsername.getText().toString().contains(" ")) {
-            edtUsername.setError("Tidak menggunakan spasi ada spasi");
-            edtUsername.requestFocus();
-        }
     }
 
     private void checkInput() {
@@ -248,51 +264,67 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             noKTP.requestFocus();
         } else if (TextUtils.isEmpty(jenkel)) {
             Toast.makeText(this, "Silahkan pilih jenis kelamin", Toast.LENGTH_SHORT).show();
+        } else if (edtUsername.getText().toString().contains(" ")) {
+            edtUsername.setError("Tidak boleh menggunakan spasi");
+            edtUsername.requestFocus();
         } else {
             uploadData();
-            finish();
         }
     }
 
     private void uploadData() {
         showProgress();
-        try {
-            mediaPath = getPath(filepath);
-            Toasty.success(this, "Succes to Send", Toasty.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            Log.d("Error Message", "Msg; " + e.getMessage());
-            Toasty.error(this, "Images Terlalu Besar, Silahkan pilih images yang lebih kecil", Toasty.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
 
-        try {
-            new MultipartUploadRequest(this, Constant.UPLOAD_REGISTER_URL)
-                    .addFileToUpload(mediaPath, "foto")
-                    .addParameter("nama_lengkap", nama_lengkap)
-                    .addParameter("no_ktp", no_ktp)
-                    .addParameter("alamat", edtAlamat)
-                    .addParameter("status", edtStatus)
-                    .addParameter("tgl_lahir", tglLahir)
-                    .addParameter("jenkel", jenkel)
-                    .addParameter("profesi", edtProfesi)
-                    .addParameter("no_tlp", no_tlp)
-                    .addParameter("email", email)
-                    .addParameter("username", username)
-                    .addParameter("password", password)
-                    .addParameter("konfirmasi", konfirmasi)
-                    .addParameter("level", level)
-                    .setMaxRetries(2)
-                    .startUpload();
-            hideProgressDialog();
+        mediaPath = getPath(filepath);
+        File imageFile = new File(mediaPath);
+        RequestBody image = RequestBody.create(MediaType.parse("multipart/form-data"), imageFile);
+        MultipartBody.Part partImage = MultipartBody.Part.createFormData("foto", imageFile.getName(), image);
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            hideProgressDialog();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            hideProgressDialog();
-        }
+        RequestBody namaLengkap = RequestBody.create(MediaType.parse("multipart/form-data"), nama_lengkap);
+        RequestBody alamat = RequestBody.create(MediaType.parse("multipart/form-data"), edtAlamat);
+        RequestBody status = RequestBody.create(MediaType.parse("multipart/form-data"), edtStatus);
+        RequestBody lahir = RequestBody.create(MediaType.parse("multipart/form-data"), tglLahir);
+        RequestBody ktp = RequestBody.create(MediaType.parse("multipart/form-data"), no_ktp);
+        RequestBody kelamin = RequestBody.create(MediaType.parse("multipart/form-data"), jenkel);
+        RequestBody jenisprofesi = RequestBody.create(MediaType.parse("multipart/form-data"), edtProfesi);
+        RequestBody telfon = RequestBody.create(MediaType.parse("multipart/form-data"), no_tlp);
+        RequestBody emailuser = RequestBody.create(MediaType.parse("multipart/form-data"), email);
+        RequestBody usernameuser = RequestBody.create(MediaType.parse("multipart/form-data"), username);
+        RequestBody passworduser = RequestBody.create(MediaType.parse("multipart/form-data"), password);
+        RequestBody konfirmasiuser = RequestBody.create(MediaType.parse("multipart/form-data"), konfirmasi);
+        RequestBody jabatan = RequestBody.create(MediaType.parse("multipart/form-data"), level);
 
+
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseRegister> call = apiInterface.registerUser(namaLengkap, ktp, alamat, status, lahir, kelamin, jenisprofesi,
+                telfon, emailuser, usernameuser, passworduser, konfirmasiuser, jabatan, partImage
+        );
+        call.enqueue(new Callback<ResponseRegister>() {
+            @Override
+            public void onResponse(Call<ResponseRegister> call, Response<ResponseRegister> response) {
+                hideProgressDialog();
+
+                ResponseRegister responseRegister = response.body();
+
+                if (responseRegister != null && responseRegister.getResult().equals("-1")) {
+                    Toasty.error(RegisterActivity.this, "Username telah terdaftar", Toasty.LENGTH_SHORT).show();
+                }
+                if (responseRegister.getResult().equals("0")) {
+                    Toasty.error(RegisterActivity.this, "Gagal Register", Toasty.LENGTH_SHORT).show();
+                }
+                if (responseRegister.getResult().equals("1")) {
+                    Toasty.success(RegisterActivity.this, "Success to Send", Toasty.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseRegister> call, Throwable t) {
+                hideProgressDialog();
+                Toasty.error(RegisterActivity.this, t.getMessage(), Toasty.LENGTH_SHORT).show();
+                Log.i("Register", t.getMessage());
+            }
+        });
     }
 
     private void hideProgressDialog() {

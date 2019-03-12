@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +28,6 @@ import com.reynaldiwijaya.smartrt.R;
 import com.reynaldiwijaya.smartrt.model.login.ResponseLogin;
 import com.reynaldiwijaya.smartrt.model.login.User;
 import com.reynaldiwijaya.smartrt.ui.Register.RegisterActivity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,17 +47,24 @@ public class LoginActivity extends MyFunction {
     Button btnLogin;
     @BindView(R.id.tv_register)
     TextView tvRegister;
+    @BindView(R.id.img_login)
+    ImageView imgLogin;
 
     private String username, password;
     private ApiInterface apiInterface;
     private User user;
     private SessionManager sm;
+    private Animation animation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.button_animation);
+        imgLogin.setAnimation(animation);
+
         sm = new SessionManager(LoginActivity.this);
         setRequestPermission();
     }
@@ -115,8 +121,6 @@ public class LoginActivity extends MyFunction {
 
                 ResponseLogin responseLogin = response.body();
 
-                Log.d("login", "onResponse: " + response.body().toString());
-
                 String result = null;
                 if (responseLogin != null) {
                     result = responseLogin.getResult();
@@ -135,7 +139,17 @@ public class LoginActivity extends MyFunction {
                     String urlImage = user.getFoto();
                     String nama = user.getNamaLengkap();
                     sm.setImageUser(urlImage);
+                    sm.setKonfirmasi(user.getKonfirmasi());
                     sm.setNameUser(nama);
+                    sm.setNoKtp(user.getNoKtp());
+                    sm.setAlamat(user.getAlamat());
+                    sm.setStatus(user.getStatus());
+                    sm.setTglLahir(user.getTglLahir());
+                    sm.setJenkel(user.getJenkel());
+                    sm.setProfesi(user.getProfesi());
+                    sm.setNoTlp(user.getNoTlp());
+                    sm.setEmail(user.getEmail());
+                    sm.setLevel(user.getLevel());
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     Toasty.success(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
                     finish();

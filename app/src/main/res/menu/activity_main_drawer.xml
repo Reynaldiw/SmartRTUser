@@ -3,20 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-        <item
-            android:id="@+id/home"
-            android:icon="@drawable/ic_home_black_24dp"
-            android:title="Home"/>
-
+            <item
+                android:id="@+id/home"
+                android:icon="@drawable/home_bottom"
+                android:title="Home"/>
 
             <item
                 android:id="@+id/laporan"
-                android:icon="@drawable/ic_email_black_24dp"
+                android:icon="@drawable/laporan_bottom"
                 android:title="Report" />
+
+
+
             <item
                 android:id="@+id/profile"
-                android:icon="@drawable/ic_person_black_24dp"
-                android:title="My Profile"/>
+                android:icon="@drawable/profile_bottom"
+                android:title="My Profile" />
+
 
 
 </menu>

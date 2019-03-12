@@ -32,15 +32,11 @@
                     android:src="@drawable/rsz_lapors" />
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:gravity="center"
-                android:text="@string/laporan"
-                android:textColor="#000"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+                android:src="@drawable/tambahlaporan"
+                android:layout_gravity="center"/>
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/edt_judul"
@@ -108,7 +104,7 @@
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:layout_weight="1"
-                android:background="@drawable/backgroundbutton2"
+                android:background="@drawable/bg_button"
                 android:text="Upload"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white" />

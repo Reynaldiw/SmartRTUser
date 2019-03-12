@@ -5,14 +5,26 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:id="@+id/scrollView">
+    android:id="@+id/scrollView"
+    android:background="@drawable/login">
 
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_margin="16dp"
-    android:gravity="center">
+    android:gravity="center"
+    android:layout_marginBottom="50dp">
+    <ImageView
+        android:id="@+id/img_login"
+        android:layout_width="168dp"
+        android:layout_height="120dp"
+        android:layout_above="@+id/linear"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/smartogin"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -103,16 +115,21 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:orientation="horizontal"
-        android:layout_margin="8dp">
+        android:background="@drawable/backgroundlayout"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp">
 
         <ImageButton
             android:id="@+id/ib_date"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_date_range_black_24dp"/>
+            android:src="@drawable/ic_date_range_black_24dp"
+            android:layout_gravity="center"/>
 
         <TextView
             android:id="@+id/tv_date"
@@ -140,7 +157,9 @@
         android:id="@+id/rg_jenisKelamin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
         <RadioButton
             android:id="@+id/rb_laki2"
@@ -264,13 +283,13 @@
     <Button
         android:id="@+id/btn_send"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginBottom="16dp"
         android:layout_weight="1"
-        android:background="@drawable/backgroundbutton"
+        android:background="@drawable/bg_button"
         android:text="Send"
         android:layout_marginTop="30dp"
         android:textAllCaps="false"
@@ -278,7 +297,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="25dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -297,7 +317,8 @@
             android:text="Sign in."
             android:textColor="@color/colorPrimary"
             android:textSize="17sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
 
     </LinearLayout>
 

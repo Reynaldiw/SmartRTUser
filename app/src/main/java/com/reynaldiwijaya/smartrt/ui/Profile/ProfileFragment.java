@@ -85,9 +85,8 @@ public class ProfileFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
 
         sm = new SessionManager(getActivity());
-        idUser = sm.getIdUser();
 
-        showData();
+        setUpList();
 
         return view;
     }
@@ -101,64 +100,32 @@ public class ProfileFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                showData();
+                setUpList();
             }
         });
 
-    }
-
-    private void showData() {
-        showProgressDialog();
-        apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<ResponseProfile> call = apiInterface.profile(idUser);
-        call.enqueue(new Callback<ResponseProfile>() {
-            @Override
-            public void onResponse(Call<ResponseProfile> call, Response<ResponseProfile> response) {
-                hideProgressDialog();
-
-                ResponseProfile responseProfile = response.body();
-                if (responseProfile != null) {
-                    userItemList = responseProfile.getUser();
-                    setUpList();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseProfile> call, Throwable t) {
-                hideProgressDialog();
-                Toasty.error(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-
-            }
-        });
     }
 
     private void setUpList() {
         RequestOptions requestOptions = new RequestOptions().error(R.drawable.avatar);
         Glide.with(getActivity())
-                .load(Constant.IMAGE_USER_URL + userItemList.get(0).getFoto())
+                .load(Constant.IMAGE_USER_URL + sm.getImageUser())
                 .apply(requestOptions)
                 .into(imgUser);
 
-        tvNama.setText(userItemList.get(0).getNamaLengkap());
-        tvLevel.setText(userItemList.get(0).getLevel());
-        tvJenkel.setText(userItemList.get(0).getJenkel());
-        tvProfesi.setText(userItemList.get(0).getProfesi());
-        tvNoKtp.setText(userItemList.get(0).getNoKtp());
-        tvBirth.setText(userItemList.get(0).getTglLahir());
-        tvHome.setText(userItemList.get(0).getAlamat());
-        tvCall.setText(userItemList.get(0).getNoTlp());
-        tvStatus.setText(userItemList.get(0).getStatus());
-        tvEmail.setText(userItemList.get(0).getEmail());
+        tvNama.setText(sm.getNameUser());
+        tvLevel.setText(sm.getLevel());
+        tvJenkel.setText(sm.getJenkel());
+        tvProfesi.setText(sm.getProfesi());
+        tvNoKtp.setText(sm.getNoKtp());
+        tvBirth.setText(sm.getTglLahir());
+        tvHome.setText(sm.getAlamat());
+        tvCall.setText(sm.getNoTlp());
+        tvStatus.setText(sm.getStatus());
+        tvEmail.setText(sm.getEmail());
 
-    }
-
-    private void hideProgressDialog() {
         swipeRefresh.setRefreshing(false);
-    }
 
-    private void showProgressDialog() {
-        swipeRefresh.setRefreshing(true);
     }
 
 

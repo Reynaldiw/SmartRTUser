@@ -20,10 +20,12 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void getData() {
+        view.showProgress();
         Call<ResponseGetInformasi> call = apiInterface.getInformasi();
         call.enqueue(new Callback<ResponseGetInformasi>() {
             @Override
             public void onResponse(Call<ResponseGetInformasi> call, Response<ResponseGetInformasi> response) {
+                view.hideProgress();
             if (response.body() != null) {
                 ResponseGetInformasi responseGetInformasi = response.body();
 
@@ -35,6 +37,7 @@ public class HomePresenter implements HomeContract.Presenter {
 
             @Override
             public void onFailure(Call<ResponseGetInformasi> call, Throwable t) {
+                view.hideProgress();
                 view.showFailureMsg(t.getMessage());
             }
         });
