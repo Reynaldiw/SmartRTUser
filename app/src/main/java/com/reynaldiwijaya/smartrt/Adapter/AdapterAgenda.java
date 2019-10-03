@@ -57,6 +57,7 @@ public class AdapterAgenda extends RecyclerView.Adapter<AdapterAgenda.ViewHolder
                 bundle.putString(Constant.TANGGAL, agendaItem.getTanggal());
 
                 context.startActivity(new Intent(context, DetailAgendaActivity.class).putExtras(bundle));
+                //numpang mang
             }
         });
     }
